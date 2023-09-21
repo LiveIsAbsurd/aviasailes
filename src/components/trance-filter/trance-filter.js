@@ -2,22 +2,46 @@ import React from 'react';
 
 import styles from './trance-filter.module.sass';
 
-export default class TranceFilter extends React.Component {
-  render() {
-    return (
-      <div className={styles.filter}>
-        <span>Количество пересадок</span>
-        <ul>
-          <li>
+const TranceFilter = () => {
+  return (
+    <div className={styles.filter}>
+      <span>Количество пересадок</span>
+      <ul>
+        <li>
+          <label>
             <input type="checkbox" />
+            <div className={styles.checkbox}></div>
             Все
-          </li>
-          <li>
+          </label>
+        </li>
+        <li>
+          <label>
             <input type="checkbox" />
+            <div className={styles.checkbox}></div>
             Без пересадок
-          </li>
-        </ul>
-      </div>
-    );
-  }
-}
+          </label>
+        </li>
+        <li>
+          <label>
+            <input type="checkbox" />
+            <div className={styles.checkbox}></div>1 пересадка
+          </label>
+        </li>
+        <li>
+          <label>
+            <input type="checkbox" />
+            <div className={styles.checkbox}></div>2 пересадки
+          </label>
+        </li>
+        <li>
+          <label>
+            <input type="checkbox" />
+            <div className={styles.checkbox}></div>3 пересадки
+          </label>
+        </li>
+      </ul>
+    </div>
+  );
+};
+
+export default TranceFilter;
