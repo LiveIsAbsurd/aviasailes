@@ -1,5 +1,6 @@
 import TranceFilter from '../trance-filter/trance-filter';
 import PriceFilter from '../price-filter';
+import TicketList from '../ticket-list';
 import logo from '../../images/Logo.svg';
 
 import appStyles from './app.module.sass';
@@ -12,6 +13,7 @@ function App() {
         <TranceFilter />
         <div>
           <PriceFilter />
+          <TicketList />
         </div>
       </div>
     </div>

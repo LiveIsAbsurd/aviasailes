@@ -4,17 +4,17 @@ import styles from './price-filter.module.sass';
 
 const PriceFilter = () => {
   return (
-    <table className={styles.filter}>
-      <th className={styles.select}>
+    <ul className={styles.filter}>
+      <li className={styles.select}>
         <button>Самый дешевый</button>
-      </th>
-      <th>
+      </li>
+      <li>
         <button>Самый быстрый</button>
-      </th>
-      <th>
+      </li>
+      <li>
         <button>Опимальный</button>
-      </th>
-    </table>
+      </li>
+    </ul>
   );
 };
 
