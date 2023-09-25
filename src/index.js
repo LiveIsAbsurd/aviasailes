@@ -1,33 +1,30 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
-import { configureStore, createReducer } from '@reduxjs/toolkit';
+// import { configureStore, createReducer } from '@reduxjs/toolkit';
+import { createStore } from 'redux';
+
 import App from './components/app/app';
-
-const inState = {
-    filter: 'ALL'
-}
-
-const filterReducer = (state = inState.filter, action) => {
-    switch (action.type) {
-        case 'SWITCH_FILTER':
-            return 'ALL';
-        default:
-            return state;
+const reducer = (state = 0, actions) => {
+  switch (actions.type) {
+    case 'INC': {
+      console.log('true');
+      return state + 1;
     }
+    default:
+      return state;
+  }
 };
 
-const rootReducer = createReducer({
-    filter: filterReducer
-});
+let store = createStore(reducer);
+store.dispatch({ type: 'INC' });
+console.log(store.getState());
 
-let store = configureStore({
-    reducer: rootReducer
-});
+const rootElement = document.getElementById('root');
+const root = createRoot(rootElement);
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <Provider store={store.getState()}>
+  <Provider store={store}>
     <App />
   </Provider>
 );
