@@ -5,17 +5,33 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 
 import App from './components/app/app';
-const reducer = (state = { filter: [] }, action) => {
+const initialState = {
+  filter: [],
+  allFilters: [
+    { label: 'ВСЕ', id: 'ALL' },
+    { label: 'БЕЗ ПЕРЕСАДОК', id: '0' },
+    { label: '1 ПЕРЕСАДКА', id: '1' },
+    { label: '2 ПЕРЕСАДКИ', id: '2' },
+    { label: '3 ПЕРЕСАДКИ', id: '3' },
+  ],
+};
+
+const reducer = (state = initialState, action) => {
   switch (action.type) {
     case 'FILTER': {
-      if (action.value === 'ALL' && !state.filter.includes(action.value)) {
-        return { filter: [action.value] };
-      }
+      let newArr;
       if (state.filter.includes(action.value)) {
-        return { filter: state.filter.filter((item) => item !== action.value && item !== 'ALL') };
+        newArr = { ...state, filter: [...state.filter.filter((el) => el !== action.value)] };
       } else {
-        return { filter: [...state.filter, action.value] };
+        if (action.value === 'ALL') {
+          const arr = state.allFilters.map((el) => el.id);
+          newArr = { ...state, filter: arr };
+        } else {
+          newArr = { ...state, filter: [...state.filter, action.value] };
+        }
       }
+
+      return newArr;
     }
     default:
       return state;
