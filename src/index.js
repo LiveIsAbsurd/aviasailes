@@ -5,11 +5,17 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 
 import App from './components/app/app';
-const reducer = (state = 0, actions) => {
-  switch (actions.type) {
-    case 'INC': {
-      console.log('true');
-      return state + 1;
+const reducer = (state = { filter: [] }, action) => {
+  switch (action.type) {
+    case 'FILTER': {
+      if (action.value === 'ALL' && !state.filter.includes(action.value)) {
+        return { filter: [action.value] };
+      }
+      if (state.filter.includes(action.value)) {
+        return { filter: state.filter.filter((item) => item !== action.value && item !== 'ALL') };
+      } else {
+        return { filter: [...state.filter, action.value] };
+      }
     }
     default:
       return state;
@@ -17,8 +23,6 @@ const reducer = (state = 0, actions) => {
 };
 
 let store = createStore(reducer);
-store.dispatch({ type: 'INC' });
-console.log(store.getState());
 
 const rootElement = document.getElementById('root');
 const root = createRoot(rootElement);
