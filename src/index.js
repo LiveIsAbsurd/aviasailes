@@ -21,7 +21,13 @@ const reducer = (state = initialState, action) => {
     case 'FILTER': {
       let newArr;
       if (state.filter.includes(action.value)) {
-        newArr = { ...state, filter: [...state.filter.filter((el) => el !== action.value)] };
+        if (state.filter.includes('ALL') && action.value !== 'ALL') {
+          newArr = { ...state, filter: [...state.filter.filter((el) => el !== 'ALL' && el !== action.value)] };
+        } else if (action.value === 'ALL') {
+          newArr = { ...state, filter: [] };
+        } else {
+          newArr = { ...state, filter: [...state.filter.filter((el) => el !== action.value)] };
+        }
       } else {
         if (action.value === 'ALL') {
           const arr = state.allFilters.map((el) => el.id);
@@ -29,6 +35,10 @@ const reducer = (state = initialState, action) => {
         } else {
           newArr = { ...state, filter: [...state.filter, action.value] };
         }
+      }
+
+      if (newArr.filter.length === state.allFilters.length - 1 && !newArr.filter.includes('ALL')) {
+        newArr = { ...newArr, filter: [...newArr.filter, 'ALL'] };
       }
 
       return newArr;
