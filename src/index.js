@@ -2,10 +2,13 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 // import { configureStore, createReducer } from '@reduxjs/toolkit';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
+import thunk from 'redux-thunk';
 
 import App from './components/app/app';
 const initialState = {
+  searchID: null,
+  tickets: [{ price: 100 }, { price: 555 }],
   filter: [],
   allFilters: [
     { label: 'ВСЕ', id: 'ALL' },
@@ -14,7 +17,15 @@ const initialState = {
     { label: '2 ПЕРЕСАДКИ', id: '2' },
     { label: '3 ПЕРЕСАДКИ', id: '3' },
   ],
+  test: 0,
 };
+
+const composeEnhancers =
+  typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
+    : compose;
+
+const enhancer = composeEnhancers(applyMiddleware(thunk));
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -43,12 +54,16 @@ const reducer = (state = initialState, action) => {
 
       return newArr;
     }
+    case 'GET_TICKETS':
+      return { ...state, tickets: action.value };
+    case 'GET_ID':
+      return { ...state, searchID: action.value };
     default:
       return state;
   }
 };
 
-let store = createStore(reducer);
+let store = createStore(reducer, enhancer);
 
 const rootElement = document.getElementById('root');
 const root = createRoot(rootElement);
