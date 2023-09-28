@@ -18,13 +18,12 @@ export const getID = () => {
         dispatch({ type: 'GET_ID', value: id.searchId });
         fetch(`https://aviasales-test-api.kata.academy/tickets?searchId=${id.searchId}`)
           .then((response) => {
-            if (response.ok) {
-              return response.json();
-            } else {
-              throw new Error('Ошибка сервера');
-            }
+            return response.json();
           })
-          .then((list) => dispatch({ type: 'GET_TICKETS', value: list.tickets.slice(5) }));
+          .then((list) => dispatch({ type: 'GET_TICKETS', value: list.tickets }))
+          .catch((err) => {
+            console.log(err);
+          });
       });
   };
 };

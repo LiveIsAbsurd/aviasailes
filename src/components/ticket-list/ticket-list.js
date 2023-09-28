@@ -7,6 +7,7 @@ import { getTickets, getID } from './../function/getTickets';
 import styles from './ticket-list.module.sass';
 const TicketList = () => {
   const data = useSelector((state) => state.tickets);
+  console.log(data);
   const searchId = useSelector((state) => state.searchId);
   useEffect(() => {
     if (!searchId) {
@@ -17,8 +18,8 @@ const TicketList = () => {
     }
   }, [searchId, data]);
   const dispatch = useDispatch();
-  const tickets = data.map((el, i) => {
-    return <Ticket key={i} price={el.price} />;
+  const tickets = data.slice(0, 5).map((el, i) => {
+    return <Ticket key={i} item={el} />;
   });
   return (
     <div className={styles.list}>

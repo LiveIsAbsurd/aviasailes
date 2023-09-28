@@ -8,7 +8,7 @@ import thunk from 'redux-thunk';
 import App from './components/app/app';
 const initialState = {
   searchID: null,
-  tickets: [{ price: 100 }, { price: 555 }],
+  tickets: [],
   filter: [],
   allFilters: [
     { label: 'ВСЕ', id: 'ALL' },
