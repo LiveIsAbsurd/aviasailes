@@ -10,20 +10,37 @@ export const getTickets = (id) => {
   };
 };
 
+export const getData = (id, dispatch) => {
+  let stop;
+  fetch(`https://aviasales-test-api.kata.academy/tickets?searchId=${id}`)
+    .then((response) => {
+      return response.json();
+    })
+    .then((list) => {
+      stop = list.stop;
+      dispatch({ type: 'GET_TICKETS', value: list.tickets });
+      if (!stop) {
+        getData(id, dispatch);
+      } else {
+        return;
+      }
+    })
+    .catch(() => {
+      if (!stop) {
+        getData(id, dispatch);
+      } else {
+        return;
+      }
+    });
+};
+
 export const getID = () => {
   return (dispatch) => {
     fetch('https://aviasales-test-api.kata.academy/search')
       .then((data) => data.json())
       .then((id) => {
         dispatch({ type: 'GET_ID', value: id.searchId });
-        fetch(`https://aviasales-test-api.kata.academy/tickets?searchId=${id.searchId}`)
-          .then((response) => {
-            return response.json();
-          })
-          .then((list) => dispatch({ type: 'GET_TICKETS', value: list.tickets }))
-          .catch((err) => {
-            console.log(err);
-          });
+        getData(id.searchId, dispatch);
       });
   };
 };

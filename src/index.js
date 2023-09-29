@@ -55,7 +55,7 @@ const reducer = (state = initialState, action) => {
       return newArr;
     }
     case 'GET_TICKETS':
-      return { ...state, tickets: action.value };
+      return { ...state, tickets: [...state.tickets, ...action.value] };
     case 'GET_ID':
       return { ...state, searchID: action.value };
     default:

@@ -5,7 +5,6 @@ import styles from './trance-filter.module.sass';
 
 const TranceFilter = () => {
   const filter = useSelector((state) => state.filter);
-  console.log(filter);
   const dispatch = useDispatch();
   const checks = useSelector((state) => state.allFilters).map((el, i) => {
     return (
