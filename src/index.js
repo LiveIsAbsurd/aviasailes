@@ -7,9 +7,9 @@ import thunk from 'redux-thunk';
 
 import App from './components/app/app';
 const initialState = {
-  searchID: null,
+  sort: 'price',
   tickets: [],
-  filter: [],
+  filter: ['ALL', '0', '1', '2', '3'],
   allFilters: [
     { label: 'ВСЕ', id: 'ALL' },
     { label: 'БЕЗ ПЕРЕСАДОК', id: '0' },
@@ -17,7 +17,8 @@ const initialState = {
     { label: '2 ПЕРЕСАДКИ', id: '2' },
     { label: '3 ПЕРЕСАДКИ', id: '3' },
   ],
-  test: 0,
+  loading: true,
+  ticketCount: 5,
 };
 
 const composeEnhancers =
@@ -55,9 +56,13 @@ const reducer = (state = initialState, action) => {
       return newArr;
     }
     case 'GET_TICKETS':
-      return { ...state, tickets: [...state.tickets, ...action.value] };
+      return { ...state, loading: false, tickets: [...state.tickets, ...action.value] };
     case 'GET_ID':
       return { ...state, searchID: action.value };
+    case 'SHOWE_MORE':
+      return { ...state, ticketCount: state.ticketCount + 5 };
+    case 'SELECT_SORT':
+      return { ...state, sort: action.value };
     default:
       return state;
   }

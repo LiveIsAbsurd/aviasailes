@@ -1,5 +1,5 @@
 import TranceFilter from '../trance-filter/trance-filter';
-import PriceFilter from '../price-filter';
+import Sort from '../sort';
 import TicketList from '../ticket-list';
 import logo from '../../images/Logo.svg';
 
@@ -12,7 +12,7 @@ function App() {
       <div className={appStyles.wrapper}>
         <TranceFilter />
         <div>
-          <PriceFilter />
+          <Sort />
           <TicketList />
         </div>
       </div>
