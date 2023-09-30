@@ -1,25 +1,30 @@
-import { getTickets, getId } from './actions';
-
-export const getData = (id, dispatch) => {
-  let stop;
+import { getTickets, error } from './actions';
+let stop;
+export const getData = (id, dispatch, recall = false) => {
   fetch(`https://aviasales-test-api.kata.academy/tickets?searchId=${id}`)
     .then((response) => {
       return response.json();
     })
     .then((list) => {
       stop = list.stop;
-      dispatch(getTickets(list.tickets));
-      if (!stop) {
-        getData(id, dispatch);
+      if (!recall) {
+        dispatch(getTickets(list.tickets, 'first'));
       } else {
-        return;
+        dispatch(getTickets(list.tickets, 'continue'));
+      }
+      if (!stop) {
+        getData(id, dispatch, true);
+      } else {
+        dispatch(getTickets(list.tickets, 'stop'));
       }
     })
-    .catch(() => {
+    .catch((err) => {
       if (!stop) {
-        getData(id, dispatch);
-      } else {
+        getData(id, dispatch, true);
+      } else if (err.message == '500') {
         return;
+      } else {
+        dispatch(error());
       }
     });
 };
@@ -29,8 +34,12 @@ export const getID = () => {
     fetch('https://aviasales-test-api.kata.academy/search')
       .then((data) => data.json())
       .then((id) => {
-        dispatch(getId(id.searchId));
         getData(id.searchId, dispatch);
+      })
+      .catch((err) => {
+        if (err.message != '500') {
+          dispatch(error());
+        }
       });
   };
 };

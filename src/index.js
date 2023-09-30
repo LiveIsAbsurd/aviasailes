@@ -9,6 +9,7 @@ import App from './components/app/app';
 const initialState = {
   sort: 'price',
   tickets: [],
+  cache: [],
   filter: ['ALL', '0', '1', '2', '3'],
   allFilters: [
     { label: 'ВСЕ', id: 'ALL' },
@@ -18,6 +19,8 @@ const initialState = {
     { label: '3 ПЕРЕСАДКИ', id: '3' },
   ],
   loading: true,
+  allLoading: true,
+  error: false,
   ticketCount: 5,
 };
 
@@ -55,14 +58,23 @@ const reducer = (state = initialState, action) => {
 
       return newArr;
     }
-    case 'GET_TICKETS':
-      return { ...state, loading: false, tickets: [...state.tickets, ...action.value] };
-    case 'GET_ID':
-      return { ...state, searchID: action.value };
+    case 'GET_TICKETS': {
+      if (action.order === 'first') {
+        return { ...state, loading: false, tickets: [...state.tickets, ...action.value] };
+      } else if (action.order === 'continue') {
+        return { ...state, loading: false, cache: [...state.cache, ...action.value] };
+      } else if (action.order === 'stop') {
+        const allTickets = [...state.cache];
+        return { ...state, loading: false, allLoading: false, tickets: [...state.tickets, ...allTickets], cache: [] };
+      }
+      break;
+    }
     case 'SHOWE_MORE':
       return { ...state, ticketCount: state.ticketCount + 5 };
     case 'SELECT_SORT':
       return { ...state, sort: action.value };
+    case 'ERROR':
+      return { ...state, error: true, loading: false };
     default:
       return state;
   }
